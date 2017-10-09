@@ -1,0 +1,26 @@
+{
+  "name": "mules-sql-wrapper",
+  "version": "0.1.0",
+  "description": "A wrapper for Node SQL connections",
+  "main": "main.js",
+  "scripts": {
+    "test": "mocha test/**/*.spec.js"
+  },
+  "keywords": [
+    "node",
+    "sql",
+    "mariadb",
+    "mysql"
+  ],
+  "author": "Brent Haertlein <brenthaertlein@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "mariasql": "^0.2.6"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^4.0.1"
+  }
+}
