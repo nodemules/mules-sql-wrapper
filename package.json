@@ -1,6 +1,6 @@
 {
   "name": "mules-sql-wrapper",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A wrapper for Node SQL connections",
   "main": "main.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "mysql"
   ],
   "author": "Brent Haertlein <brenthaertlein@gmail.com>",
+  "repository": "https://github.com/nodemules/mules-sql-wrapper",
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.4",
