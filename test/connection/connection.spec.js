@@ -36,31 +36,5 @@
       });
     });
 
-    describe('query', () => {
-
-      connection.configure(configuration);
-      connection.connect();
-
-      it('should be a function', () => {
-        expect(connection.query).to.be.a('Function');
-      });
-
-
-      it('should be a promise', async function() {
-        let result = connection.query();
-        await expect(result).to.be.a('Promise');
-        await expect(result.then).to.be.a('Function');
-        await expect(result.catch).to.be.a('Function');
-        await expect(result).to.eventually.be.rejected;
-      });
-
-      it('should accept some SQL', async function() {
-        let result = connection.query('SELECT CONNECTION_ID();');
-        await expect(result).to.eventually.be.fulfilled;
-        await expect(result).to.eventually.be.a('Array');
-      });
-
-    });
-
   });
 }

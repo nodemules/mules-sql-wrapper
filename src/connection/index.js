@@ -38,21 +38,7 @@
       });
     },
 
-    query: (sql, params) => {
-      return new Promise((resolve, reject) => {
-        if (!sql) {
-          return reject({
-            message: 'A SQL string is required to perform a query'
-          });
-        }
-        client.query(sql, params, (err, rows) => {
-          if (err) {
-            return reject(err);
-          }
-          return resolve(rows, rows.info);
-        });
-      });
-    }
+    getConnection: () => client
 
   };
 }
