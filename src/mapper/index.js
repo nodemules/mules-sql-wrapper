@@ -1,7 +1,29 @@
 {
   const _ = require('lodash');
+  const moment = require('moment');
 
-  let model;
+  let allowEmptySchema = false;
+
+  let schema;
+
+  function parseModelFromRow(row) {
+    _.forEach(row, (v, k) => {
+      let type;
+      if (moment(v, moment.ISO_8601, true).isValid()) {
+        type = Date;
+      } else if (_.isFinite(parseInt(v))) {
+        type = Number;
+      }
+      let value = k;
+      if (type) {
+        value = {
+          'column': k,
+          'type': type
+        };
+      }
+      schema[_.camelCase(k)] = value;
+    });
+  }
 
   function parseType(type, value) {
     switch (type) {
@@ -16,7 +38,13 @@
 
   function parse(row) {
     let o = {};
-    _.forEach(model, (v, k) => {
+    if (_.isEmpty(schema)) {
+      if (!allowEmptySchema) {
+        throw 'A schema is required to parse a row. Use mapper.allowEmptySchema(true) to create a dynamic schema for given rows.';
+      }
+      parseModelFromRow(row);
+    }
+    _.forEach(schema, (v, k) => {
       if (_.isString(v)) {
         o[k] = row[v];
       }
@@ -28,11 +56,14 @@
   }
 
   module.exports = {
-    load: (m) => {
-      model = m;
+    loadSchema: (s) => {
+      schema = s;
     },
-    getModel: () => {
-      return model;
+    getSchema: () => {
+      return schema;
+    },
+    allowEmptySchema: (allow) => {
+      allowEmptySchema = allow;
     },
     parse: (rows) => {
       if (!rows || !rows.length) {

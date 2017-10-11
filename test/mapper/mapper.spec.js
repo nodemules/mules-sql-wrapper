@@ -15,22 +15,25 @@
   const TEST_ROW = TEST_DATA.TEST_ROW;
   const TEST_RESULT = TEST_DATA.TEST_RESULT;
   const TEST_NUM_ROWS = TEST_DATA.TEST_NUM_ROWS;
+  const TEST_RESULT_NO_MODEL = TEST_DATA.TEST_RESULT_NO_MODEL;
+  const TEST_SCHEMA_ERROR = TEST_DATA.TEST_SCHEMA_ERROR;
 
   describe('wrapper.Mapper', () => {
 
-    describe('load', () => {
+    describe('loadSchema', () => {
       it('should load a model', () => {
-        mapper.load(TEST_MODEL);
+        mapper.loadSchema(TEST_MODEL);
       });
     });
 
     beforeEach(() => {
-      mapper.load(TEST_MODEL);
+      mapper.loadSchema(TEST_MODEL);
+      mapper.allowEmptySchema(false);
     });
 
-    describe('getModel', () => {
+    describe('getSchema', () => {
       it('should return the loaded model', () => {
-        let model = mapper.getModel();
+        let model = mapper.getSchema();
         expect(model).to.deep.equal(TEST_MODEL);
       });
     });
@@ -50,7 +53,7 @@
 
         for (let i = 1; i <= TEST_NUM_ROWS; i++) {
           let row = _.create(TEST_ROW);
-          row.MODEL_ID = new String(Math.floor(Math.random() * 10));
+          row.MODEL_ID = new String(Math.floor((Math.random() * 10) + 1));
           rows.push(row);
         }
 
@@ -61,6 +64,27 @@
         expect(sample.name).to.equal(TEST_RESULT.name);
         expect(sample.dateCreated).to.deep.equal(TEST_RESULT.dateCreated);
         expect(sample.dateModified).to.deep.equal(TEST_RESULT.dateModified);
+      });
+    });
+
+    describe('parse a row without a model', () => {
+      it('should return a camelCased representation of the row', () => {
+        mapper.loadSchema({});
+        mapper.allowEmptySchema(true);
+
+        let rows = [];
+        rows.push(TEST_ROW);
+        let result = mapper.parse(rows);
+        expect(result).to.deep.equal(TEST_RESULT_NO_MODEL);
+      });
+    });
+
+    describe('parse a row without a model, allowEmptySchema=false', () => {
+      it('should fail with a specific error message', () => {
+        mapper.loadSchema({});
+        let rows = [];
+        rows.push(TEST_ROW);
+        expect(() => mapper.parse(rows)).to.throw(TEST_SCHEMA_ERROR);
       });
     });
 

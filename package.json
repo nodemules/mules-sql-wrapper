@@ -17,7 +17,8 @@
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.4",
-    "mariasql": "^0.2.6"
+    "mariasql": "^0.2.6",
+    "moment": "^2.19.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
