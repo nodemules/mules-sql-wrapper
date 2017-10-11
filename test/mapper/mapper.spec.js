@@ -16,7 +16,8 @@
   const TEST_RESULT = TEST_DATA.TEST_RESULT;
   const TEST_NUM_ROWS = TEST_DATA.TEST_NUM_ROWS;
   const TEST_RESULT_NO_MODEL = TEST_DATA.TEST_RESULT_NO_MODEL;
-  const TEST_SCHEMA_ERROR = TEST_DATA.TEST_SCHEMA_ERROR;
+
+  const TEST_ERRORS = TEST_DATA.ERRORS;
 
   describe('wrapper.Mapper', () => {
 
@@ -52,7 +53,7 @@
         let rows = [];
 
         for (let i = 1; i <= TEST_NUM_ROWS; i++) {
-          let row = _.create(TEST_ROW);
+          let row = _.clone(TEST_ROW);
           row.MODEL_ID = new String(Math.floor((Math.random() * 10) + 1));
           rows.push(row);
         }
@@ -68,6 +69,15 @@
     });
 
     describe('parse a row without a model', () => {
+      it('should throw an error', () => {
+        mapper.loadSchema({});
+        let rows = [];
+        rows.push(TEST_ROW);
+        expect(() => mapper.parse(rows)).to.throw(Error, TEST_ERRORS.TEST_SCHEMA_REQUIRED_ERROR);
+      });
+    });
+
+    describe('parse a row without a model, allowEmptySchema=true', () => {
       it('should return a camelCased representation of the row', () => {
         mapper.loadSchema({});
         mapper.allowEmptySchema(true);
@@ -79,12 +89,13 @@
       });
     });
 
-    describe('parse a row without a model, allowEmptySchema=false', () => {
-      it('should fail with a specific error message', () => {
-        mapper.loadSchema({});
+    describe('parse a row missing a required field', () => {
+      it('should throw an error', () => {
         let rows = [];
-        rows.push(TEST_ROW);
-        expect(() => mapper.parse(rows)).to.throw(TEST_SCHEMA_ERROR);
+        let rowWithoutName = _.cloneDeep(TEST_ROW);
+        Reflect.deleteProperty(rowWithoutName, 'NAME');
+        rows.push(rowWithoutName);
+        expect(() => mapper.parse(rows)).to.throw(Error, TEST_ERRORS.TEST_SCHEMA_COLUMN_REQUIRED_ERROR);
       });
     });
 

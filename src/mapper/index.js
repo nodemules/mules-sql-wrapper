@@ -10,7 +10,9 @@
     getSchema: () => {
       return Parser.getSchema();
     },
-    allowEmptySchema: Parser.allowEmptySchema,
+    allowEmptySchema: (allow) => {
+      Parser.allowEmptySchema(allow);
+    },
     parse: (rows) => {
       if (!rows || !rows.length) {
         return {};
