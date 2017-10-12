@@ -2,16 +2,14 @@
 
   const mariadbConnection = require('../connection');
 
+  const validator = require('./validator');
+
   module.exports = {
 
     query: (sql, params) => {
       return new Promise((resolve, reject) => {
         let client = mariadbConnection.getConnection();
-        if (!sql) {
-          return reject({
-            message: 'A SQL string is required to perform a query'
-          });
-        }
+        validator.validateDML(sql);
         client.query(sql, params, (err, rows) => {
           if (err) {
             return reject(err);
