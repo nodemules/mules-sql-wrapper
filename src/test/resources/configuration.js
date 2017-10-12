@@ -6,5 +6,5 @@
       password: 'test-pass',
       db: 'test_db'
     }
-  }
+  };
 }
