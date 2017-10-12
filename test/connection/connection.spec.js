@@ -7,7 +7,7 @@
   const expect = chai.expect;
 
   const connection = wrapper.Connection;
-  const configuration = require('./.configuration.js');
+  const configuration = require('../.configuration.js');
 
   describe('wrapper.Connection', () => {
     describe('configure', () => {
@@ -34,32 +34,6 @@
         expect(connectionStatus.then).to.be.a('Function');
         expect(connectionStatus.catch).to.be.a('Function');
       });
-    });
-
-    describe('query', () => {
-
-      connection.configure(configuration);
-      connection.connect();
-
-      it('should be a function', () => {
-        expect(connection.query).to.be.a('Function');
-      });
-
-
-      it('should be a promise', async function() {
-        let result = connection.query();
-        await expect(result).to.be.a('Promise');
-        await expect(result.then).to.be.a('Function');
-        await expect(result.catch).to.be.a('Function');
-        await expect(result).to.eventually.be.rejected;
-      });
-
-      it('should accept some SQL', async function() {
-        let result = connection.query('SELECT CONNECTION_ID();');
-        await expect(result).to.eventually.be.fulfilled;
-        await expect(result).to.eventually.be.a('Array');
-      });
-
     });
 
   });
