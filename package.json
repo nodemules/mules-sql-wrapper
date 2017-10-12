@@ -1,6 +1,6 @@
 {
   "name": "mules-sql-wrapper",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "A wrapper for Node SQL connections",
   "main": "main.js",
   "scripts": {
