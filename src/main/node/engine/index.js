@@ -48,7 +48,8 @@
           return exports.query(sql, params).then(resolve).catch(reject);
         }
         reject({
-          message: 'The SQL string provided is not valid DDL or DML and cannot be run.'
+          message: 'The SQL string provided is not valid DDL or DML and cannot be run.',
+          sql
         });
       });
     }

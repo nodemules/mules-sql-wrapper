@@ -23,6 +23,7 @@
     clean: (sql) => {
       assert.ok(sql, 'A SQL string is required to perform a query');
       sql.trim();
+      sql.replace(/\n/gm, '');
     },
 
     isValidDDL: (sql) => {

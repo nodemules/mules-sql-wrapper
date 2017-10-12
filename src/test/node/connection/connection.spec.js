@@ -26,14 +26,22 @@
     });
 
     describe('ready', () => {
+
+      before(() => {
+        connection.configure(configuration);
+        connection.connect();
+      });
+
       it('should be a function', () => {
         expect(connection.ready).to.be.a('function');
       });
+
       it('should be a promise', () => {
         let connectionStatus = connection.ready();
         expect(connectionStatus.then).to.be.a('Function');
         expect(connectionStatus.catch).to.be.a('Function');
       });
+
     });
 
   });
