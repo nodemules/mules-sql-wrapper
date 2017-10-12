@@ -18,21 +18,44 @@
     /BEGIN/, /COMMIT/, /ROLLBACK/, /SAVEPOINT/
   ];
 
-  module.exports = {
+  module.exports = exports = {
+
+    clean: (sql) => {
+      assert.ok(sql, 'A SQL string is required to perform a query');
+      sql.trim();
+    },
+
+    isValidDDL: (sql) => {
+      exports.clean(sql);
+      let validity = false;
+      _.forEach(DDL_STATEMENTS, (valid) => {
+        validity = validity || sql.match(valid, 'i');
+      });
+      return validity;
+    },
+
+    isValidDML: (sql) => {
+      exports.clean(sql);
+      let validity = false;
+      _.forEach(DML_STATEMENTS, (valid) => {
+        validity = validity || sql.match(valid, 'i');
+      });
+      return validity;
+    },
 
     validateDML: (sql) => {
-      assert.ok(sql, 'A SQL string is required to perform a query');
+      exports.clean(sql);
       let invalidStatements = [].concat(DDL_STATEMENTS).concat(DCL_STATEMENTS).concat(TCL_STATEMENTS);
-      _.forEach(invalidStatements, (ddl) => {
-        assert.equal(sql.match(ddl, 'i'));
+      _.forEach(invalidStatements, (invalid) => {
+        assert.equal(sql.match(invalid, 'i'));
       });
     },
 
     validateDDL: (sql) => {
-      assert.ok(sql, 'A SQL string is required to perform a query');
+      exports.clean(sql);
       let invalidStatements = [].concat(DML_STATEMENTS).concat(DCL_STATEMENTS).concat(TCL_STATEMENTS);
-      _.forEach(invalidStatements, (ddl) => {
-        assert.equal(sql.match(ddl, 'i'));
+      _.forEach(invalidStatements, (invalid) => {
+        assert.equal(sql.match(invalid, 'i'));
       });
     }
 
