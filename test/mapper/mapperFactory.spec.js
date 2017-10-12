@@ -6,7 +6,7 @@
 
   const expect = chai.expect;
 
-  const MapperFactory = wrapper.Mapper;
+  const MapperFactory = wrapper.MapperFactory;
 
   const TEST_DATA = require('./test.data');
 
