@@ -50,11 +50,10 @@
         o[k] = row[v];
       }
       if (_.isObject(v)) {
-        let defined = !!row[v.column];
         if (v.required) {
-          assert(defined, `A required column is missing: [${v.column}]`);
+          assert(!!row[v.column], `A required column is missing: [${v.column}]`);
         }
-        if (defined) {
+        if (row[v.column] !== undefined) {
           o[k] = parseType(v.type, row[v.column]);
         }
       }

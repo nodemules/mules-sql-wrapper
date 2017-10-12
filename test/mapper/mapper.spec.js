@@ -50,13 +50,8 @@
 
     describe('mapRows', () => {
       it('should map all the rows and return an array of objects', () => {
-        let rows = [];
 
-        for (let i = 1; i <= TEST_NUM_ROWS; i++) {
-          let row = _.clone(TEST_ROW);
-          row.MODEL_ID = new String(Math.floor((Math.random() * 10) + 1));
-          rows.push(row);
-        }
+        let rows = _.fill(Array(TEST_NUM_ROWS), _.clone(TEST_ROW));
 
         let result = mapper.mapRows(rows);
         expect(result.length).to.equal(TEST_NUM_ROWS);
