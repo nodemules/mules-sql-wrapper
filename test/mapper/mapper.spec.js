@@ -7,7 +7,7 @@
 
   const expect = chai.expect;
 
-  const mapper = wrapper.Mapper;
+  const MapperFactory = wrapper.Mapper;
 
   const TEST_DATA = require('./test.data');
 
@@ -21,6 +21,8 @@
 
   describe('wrapper.Mapper', () => {
 
+    let mapper;
+
     describe('loadSchema', () => {
       it('should load a model', () => {
         mapper.loadSchema(TEST_MODEL);
@@ -28,6 +30,7 @@
     });
 
     beforeEach(() => {
+      mapper = new MapperFactory();
       mapper.loadSchema(TEST_MODEL);
       mapper.allowEmptySchema(false);
     });
