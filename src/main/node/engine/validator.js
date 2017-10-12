@@ -3,7 +3,7 @@
   const assert = require('assert');
 
   const DML_STATEMENTS = [
-    /^SELECT/, /^INSERT/, /^UPDATE/, /^DELETE/
+    /^SELECT/, /^(INSERT)/, /^UPDATE/, /^DELETE/
   ];
 
   const DDL_STATEMENTS = [
@@ -30,7 +30,7 @@
       exports.clean(sql);
       let validity = false;
       _.forEach(DDL_STATEMENTS, (valid) => {
-        validity = validity || valid.test(sql, 'i');
+        validity = validity || valid.test(sql.replace(/\\n/gm, ''), 'i');
       });
       return validity;
     },
@@ -39,7 +39,7 @@
       exports.clean(sql);
       let validity = false;
       _.forEach(DML_STATEMENTS, (valid) => {
-        validity = validity || valid.test(sql, 'i');
+        validity = validity || valid.test(sql.replace(/\n/gm, ''), 'i');
       });
       return validity;
     },
