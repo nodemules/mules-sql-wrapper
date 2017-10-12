@@ -15,7 +15,7 @@
   const TEST_RESULT = TEST_DATA.TEST_RESULT;
   const TEST_RESULT_NO_MODEL = TEST_DATA.TEST_RESULT_NO_MODEL;
 
-  describe('wrapper.Mapper as a Factory', () => {
+  describe('wrapper.MapperFactory', () => {
     let mapperA, mapperB;
 
     beforeEach(() => {

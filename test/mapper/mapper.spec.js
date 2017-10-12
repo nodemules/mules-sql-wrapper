@@ -19,20 +19,20 @@
 
   const TEST_ERRORS = TEST_DATA.ERRORS;
 
-  describe('wrapper.Mapper', () => {
+  describe('Testing wrapper.MapperFactory instance functionality...', () => {
 
     let mapper;
-
-    describe('loadSchema', () => {
-      it('should load a model', () => {
-        mapper.loadSchema(TEST_MODEL);
-      });
-    });
 
     beforeEach(() => {
       mapper = new MapperFactory();
       mapper.loadSchema(TEST_MODEL);
       mapper.allowEmptySchema(false);
+    });
+
+    describe('loadSchema', () => {
+      it('should load a model', () => {
+        mapper.loadSchema(TEST_MODEL);
+      });
     });
 
     describe('getSchema', () => {
