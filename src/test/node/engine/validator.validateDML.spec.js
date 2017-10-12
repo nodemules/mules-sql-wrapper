@@ -14,17 +14,23 @@
 
   describe('Testing the DML validation funcitonality within the Engine module', () => {
 
-    connection.configure(configuration);
-    connection.connect();
+    before(() => {
+      connection.configure(configuration);
+      connection.connect();
+    });
 
     describe('query', () => {
 
       before(() => {
+        connection.allowDefinitions(true);
         engine.define(TEST_DATA.DDL.CREATE_TABLE);
+        connection.allowDefinitions(false);
       });
 
       after(() => {
+        connection.allowDefinitions(true);
         engine.define(TEST_DATA.DDL.DROP_TABLE);
+        connection.allowDefinitions(false);
       });
 
       beforeEach(() => {

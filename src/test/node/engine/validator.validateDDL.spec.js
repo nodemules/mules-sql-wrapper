@@ -16,8 +16,11 @@
 
   describe('Testing the DDL validation funcitonality within the Engine module', () => {
 
-    connection.configure(configuration);
-    connection.connect();
+    before(() => {
+      connection.configure(configuration);
+      connection.connect();
+      connection.allowDefinitions(true);
+    });
 
     describe('define', () => {
 
