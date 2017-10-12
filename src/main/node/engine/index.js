@@ -17,6 +17,19 @@
           return resolve(rows, rows.info);
         });
       });
+    },
+
+    define: (sql) => {
+      return new Promise((resolve, reject) => {
+        let client = mariadbConnection.getConnection();
+        validator.validateDDL(sql);
+        client.query(sql, (err, rows) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(rows, rows.info);
+        });
+      });
     }
 
   };
