@@ -15,13 +15,14 @@
       (
         ID int primary key auto_increment,
         NAME varchar(100) not null,
+        DESCRIPTION varchar(1000),
         DATE datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
       ) auto_increment=0`,
       ALTER_TABLE: 'ALTER TABLE \`TEST_DB\`.\`TESTING_DATA\` modify NAME varchar(1000) not null',
       DROP_TABLE: 'DROP TABLE \`TEST_DB\`.\`TESTING_DATA\`'
     },
     DML: {
-      INSERT_STMT: 'INSERT INTO \`TEST_DB\`.\`TESTING_DATA\` (NAME) VALUES (\'TEST NAME\')',
+      INSERT_STMT: 'INSERT INTO `TEST_DB`.`TESTING_DATA` (`NAME`, `DESCRIPTION`) values (\'TEST NEW NAME\', \'TEST DESCRIPTION\')',
       UPDATE_STMT: 'UPDATE \`TEST_DB\`.\`TESTING_DATA\` SET NAME = \'TEST NAME!\' WHERE ID = 1',
       SELECT_ALL_STMT: 'SELECT ID, NAME FROM \`TEST_DB\`.\`TESTING_DATA\`',
       SELECT_STMT: 'SELECT ID, NAME FROM \`TEST_DB\`.\`TESTING_DATA\` WHERE ID = 1',
