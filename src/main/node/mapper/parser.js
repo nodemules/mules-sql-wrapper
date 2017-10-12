@@ -3,6 +3,10 @@
   const moment = require('moment');
   const assert = require('assert');
 
+  const COUNT_ERROR =
+    `A count row is expected to contain only a single
+  enumerable property case-insensitively matching COUNT or COUNT(*)`;
+
   module.exports = function() {
 
     let schema;
@@ -66,7 +70,33 @@
       return o;
     }
 
+    function count(rows) {
+      if (!rows || !rows.length || rows.length > 1) {
+        assert.fail(`${COUNT_ERROR}, but [${rows.length}] rows were found.`);
+      }
+      let row = rows[0];
+      let count = {};
+      let labels = [/^(COUNT)$/, /^(COUNT\(.*\))$/];
+      _.forEach(labels, (label) => {
+        let props = 0;
+        _.forEach(row, (v, k) => {
+          if (props > 0) {
+            assert.fail(`${COUNT_ERROR}, but more than one property was found.`);
+          }
+          if (label.test(k, 'i')) {
+            count.count = row[k];
+          }
+          props++;
+        });
+      });
+      if (!count.count) {
+        assert.fail(`${COUNT_ERROR}, but no valid count property was found.`);
+      }
+      return count;
+    }
+
     return {
+      count,
       parse,
       getSchema: () => {
         return schema;

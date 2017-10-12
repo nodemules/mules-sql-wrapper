@@ -17,6 +17,7 @@
       allowEmptySchema: (allow) => {
         Parser.allowEmptySchema(allow);
       },
+      count: Parser.count,
       parse: (rows) => {
         if (!rows || !rows.length) {
           return {};

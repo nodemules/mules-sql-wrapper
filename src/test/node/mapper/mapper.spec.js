@@ -42,6 +42,53 @@
       });
     });
 
+    describe('count', () => {
+      it('should return the count value', () => {
+        let rows = [];
+        rows.push({
+          'COUNT(*)': 5
+        });
+        let result = mapper.count(rows);
+        expect(result).to.deep.equal({
+          count: 5
+        });
+      });
+
+      it('should fail if there are no rows', () => {
+        let rows = [];
+        expect(() => mapper.count(rows)).to.throw(Error, /but \[\d\] rows were found./);
+      });
+
+      it('should fail if there is more than a single row', () => {
+        let rows = [];
+        rows.push({
+          count: 5,
+          foo: 'bar'
+        });
+        rows.push({
+          count: 6
+        });
+        expect(() => mapper.count(rows)).to.throw(Error, /but \[\d\] rows were found./);
+      });
+
+      it('should fail if the row has more than one column', () => {
+        let rows = [];
+        rows.push({
+          count: 5,
+          foo: 'bar'
+        });
+        expect(() => mapper.count(rows)).to.throw(Error, /but more than one property was found/);
+      });
+
+      it('should fail if no count column was found', () => {
+        let rows = [];
+        rows.push({
+          foo: 'bar'
+        });
+        expect(() => mapper.count(rows)).to.throw(Error, /but no valid count property was found/);
+      });
+    });
+
     describe('parse', () => {
       it('should return the first (and only) result from rows', () => {
         let rows = [];
