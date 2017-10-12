@@ -29,7 +29,7 @@
       exports.clean(sql);
       let validity = false;
       _.forEach(DDL_STATEMENTS, (valid) => {
-        validity = validity || sql.match(valid, 'i');
+        validity = validity || valid.test(sql, 'i');
       });
       return validity;
     },
@@ -38,7 +38,7 @@
       exports.clean(sql);
       let validity = false;
       _.forEach(DML_STATEMENTS, (valid) => {
-        validity = validity || sql.match(valid, 'i');
+        validity = validity || valid.test(sql, 'i');
       });
       return validity;
     },
