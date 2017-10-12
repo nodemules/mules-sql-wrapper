@@ -12,7 +12,11 @@
     },
     DDL: {
       CREATE_TABLE: `CREATE TABLE \`TEST_DB\`.\`TESTING_DATA\`
-      (ID int primary key auto_increment, NAME varchar(100) not null) auto_increment=0`,
+      (
+        ID int primary key auto_increment,
+        NAME varchar(100) not null,
+        DATE datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+      ) auto_increment=0`,
       ALTER_TABLE: 'ALTER TABLE \`TEST_DB\`.\`TESTING_DATA\` modify NAME varchar(1000) not null',
       DROP_TABLE: 'DROP TABLE \`TEST_DB\`.\`TESTING_DATA\`'
     },
