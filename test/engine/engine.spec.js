@@ -8,7 +8,7 @@
 
   const connection = wrapper.Connection;
   const engine = wrapper.Engine;
-  const configuration = require('./.configuration.js');
+  const configuration = require('../.configuration.js');
 
   describe('wrapper.Engine', () => {
 
