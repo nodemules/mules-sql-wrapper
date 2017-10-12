@@ -7,7 +7,7 @@
 
   const expect = chai.expect;
 
-  const mapper = wrapper.Mapper;
+  const MapperFactory = wrapper.MapperFactory;
 
   const TEST_DATA = require('./test.data');
 
@@ -19,7 +19,15 @@
 
   const TEST_ERRORS = TEST_DATA.ERRORS;
 
-  describe('wrapper.Mapper', () => {
+  describe('Testing wrapper.MapperFactory instance functionality...', () => {
+
+    let mapper;
+
+    beforeEach(() => {
+      mapper = new MapperFactory();
+      mapper.loadSchema(TEST_MODEL);
+      mapper.allowEmptySchema(false);
+    });
 
     describe('loadSchema', () => {
       it('should load a model', () => {
@@ -27,15 +35,57 @@
       });
     });
 
-    beforeEach(() => {
-      mapper.loadSchema(TEST_MODEL);
-      mapper.allowEmptySchema(false);
-    });
-
     describe('getSchema', () => {
       it('should return the loaded model', () => {
         let model = mapper.getSchema();
         expect(model).to.deep.equal(TEST_MODEL);
+      });
+    });
+
+    describe('count', () => {
+      it('should return the count value', () => {
+        let rows = [];
+        rows.push({
+          'COUNT(*)': 5
+        });
+        let result = mapper.count(rows);
+        expect(result).to.deep.equal({
+          count: 5
+        });
+      });
+
+      it('should fail if there are no rows', () => {
+        let rows = [];
+        expect(() => mapper.count(rows)).to.throw(Error, /but \[\d\] rows were found./);
+      });
+
+      it('should fail if there is more than a single row', () => {
+        let rows = [];
+        rows.push({
+          count: 5,
+          foo: 'bar'
+        });
+        rows.push({
+          count: 6
+        });
+        expect(() => mapper.count(rows)).to.throw(Error, /but \[\d\] rows were found./);
+      });
+
+      it('should fail if the row has more than one column', () => {
+        let rows = [];
+        rows.push({
+          count: 5,
+          foo: 'bar'
+        });
+        expect(() => mapper.count(rows)).to.throw(Error, /but more than one property was found/);
+      });
+
+      it('should fail if no count column was found', () => {
+        let rows = [];
+        rows.push({
+          foo: 'bar'
+        });
+        expect(() => mapper.count(rows)).to.throw(Error, /but no valid count property was found/);
       });
     });
 

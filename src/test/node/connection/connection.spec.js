@@ -7,7 +7,7 @@
   const expect = chai.expect;
 
   const connection = wrapper.Connection;
-  const configuration = require('../.configuration.js');
+  const configuration = require('../../resources/configuration.js');
 
   describe('wrapper.Connection', () => {
     describe('configure', () => {
