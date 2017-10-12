@@ -5,7 +5,13 @@
   let config = {};
   let client;
 
+  let allowDefinitions = false;
+
   module.exports = {
+
+    allowDefinitions: (allow) => {
+      allowDefinitions = allow;
+    },
 
     configure: (conf) => {
       config = conf;
@@ -15,9 +21,15 @@
 
       client = new mariasql(config.db);
 
+      allowDefinitions = !!config.allowDefinitions;
+
       client.connect();
 
     },
+
+    getConnection: () => client,
+
+    isDefinitionAllowed: () => allowDefinitions,
 
     ready: () => {
       return new Promise((resolve, reject) => {
@@ -36,9 +48,7 @@
         }
         debounced(client);
       });
-    },
-
-    getConnection: () => client
+    }
 
   };
 }

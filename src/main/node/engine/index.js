@@ -1,4 +1,5 @@
 {
+  const assert = require('assert');
 
   const mariadbConnection = require('../connection');
 
@@ -21,6 +22,10 @@
 
     define: (sql) => {
       return new Promise((resolve, reject) => {
+        assert.ok(mariadbConnection.isDefinitionAllowed(),
+          `DDL is not allowed, please use Connection.allowDefintions()
+          or set allowDefintions = true in your configuration `
+        );
         let client = mariadbConnection.getConnection();
         validator.validateDDL(sql);
         client.query(sql, (err, rows) => {
