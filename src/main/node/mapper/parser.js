@@ -48,6 +48,7 @@
     }
 
     function parse(rows, localSchema, columnPrefix) {
+      console.error('parsing!!! ', rows);
       let row = rows[0];
       let o = {};
       if (!localSchema && _.isEmpty(schema)) {
