@@ -6,10 +6,38 @@
   const TEST_MODEL_DATE_CREATED = '1970-01-01';
   const TEST_MODEL_DATE_MODIFIED = '1970-01-01T00:00:00Z';
 
+  const TEST_RELATED_MODEL_ID = '100';
+  const TEST_RELATED_MODEL_NAME = 'TEST RELATED MODEL NAME';
+  const TEST_RELATED_MODEL_DATE = '1970-01-01T00:00:00Z';
+  const TEST_RELATED_MODEL_STRING = 'This is a string';
+  const TEST_RELATED_MODEL_NUMBER = '90210';
+
   const TEST_NUM_ROWS = 10;
 
   const TEST_SCHEMA_REQUIRED_ERROR = /A schema is required to parse a row/;
   const TEST_SCHEMA_COLUMN_REQUIRED_ERROR = /A required column is missing/;
+
+  const TEST_RELATED_MODEL = {
+    'id': {
+      column: 'RELATED_MODEL_ID',
+      type: Number,
+      required: true
+    },
+    'name': {
+      column: 'NAME',
+      required: true
+    },
+    'date': {
+      column: 'DATE',
+      type: Date,
+      required: true
+    },
+    'someString': 'SOME_STRING',
+    'someNumber': {
+      column: 'SOME_NUMBER',
+      type: Number
+    }
+  };
 
   const TEST_MODEL = {
     'id': {
@@ -31,6 +59,10 @@
       column: 'DATE_MODIFIED',
       type: Date,
       required: true
+    },
+    'related': {
+      modelName: 'RELATED',
+      schema: TEST_RELATED_MODEL
     }
   };
 
@@ -39,7 +71,12 @@
     'NAME': TEST_MODEL_NAME,
     'DESCRIPTION': TEST_MODEL_DESCRIPTION,
     'DATE_CREATED': TEST_MODEL_DATE_CREATED,
-    'DATE_MODIFIED': TEST_MODEL_DATE_MODIFIED
+    'DATE_MODIFIED': TEST_MODEL_DATE_MODIFIED,
+    'RELATED.RELATED_MODEL_ID': TEST_RELATED_MODEL_ID,
+    'RELATED.NAME': TEST_RELATED_MODEL_NAME,
+    'RELATED.DATE': TEST_RELATED_MODEL_DATE,
+    'RELATED.SOME_STRING': TEST_RELATED_MODEL_STRING,
+    'RELATED.SOME_NUMBER': TEST_RELATED_MODEL_NUMBER
   };
 
   const TEST_RESULT = {
@@ -47,7 +84,14 @@
     'name': TEST_MODEL_NAME,
     'description': TEST_MODEL_DESCRIPTION,
     'dateCreated': new Date(TEST_MODEL_DATE_CREATED),
-    'dateModified': new Date(TEST_MODEL_DATE_MODIFIED)
+    'dateModified': new Date(TEST_MODEL_DATE_MODIFIED),
+    'related': {
+      'id': parseInt(TEST_RELATED_MODEL_ID),
+      'name': TEST_RELATED_MODEL_NAME,
+      'date': new Date(TEST_RELATED_MODEL_DATE),
+      'someString': TEST_RELATED_MODEL_STRING,
+      'someNumber': parseInt(TEST_RELATED_MODEL_NUMBER)
+    }
   };
 
   const TEST_RESULT_NO_MODEL = {
@@ -55,7 +99,12 @@
     'name': TEST_MODEL_NAME,
     'description': TEST_MODEL_DESCRIPTION,
     'dateCreated': new Date(TEST_MODEL_DATE_CREATED),
-    'dateModified': new Date(TEST_MODEL_DATE_MODIFIED)
+    'dateModified': new Date(TEST_MODEL_DATE_MODIFIED),
+    'relatedDate': new Date(TEST_RELATED_MODEL_DATE),
+    'relatedName': TEST_RELATED_MODEL_NAME,
+    'relatedRelatedModelId': parseInt(TEST_RELATED_MODEL_ID),
+    'relatedSomeNumber': parseInt(TEST_RELATED_MODEL_NUMBER),
+    'relatedSomeString': TEST_RELATED_MODEL_STRING
   };
 
   module.exports = {

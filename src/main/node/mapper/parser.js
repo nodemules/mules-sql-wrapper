@@ -45,25 +45,47 @@
       }
     }
 
-    function parse(row) {
+    function parse(row, localSchema, columnPrefix) {
       let o = {};
-      if (_.isEmpty(schema)) {
+      if (!localSchema && _.isEmpty(schema)) {
         assert(allowEmptySchema,
           `A schema is required to parse a row.
           Use mapper.allowEmptySchema(true) to create a dynamic schema for given rows.`
         );
         parseModelFromRow(row);
       }
-      _.forEach(schema, (v, k) => {
+      if (!localSchema) {
+        localSchema = schema;
+      }
+      _.forEach(localSchema, (v, k) => {
+        let columnName;
         if (_.isString(v)) {
-          o[k] = row[v];
+          columnName = v;
+          if (columnPrefix) {
+            columnName = columnPrefix + '.' + columnName;
+          }
+          o[k] = row[columnName];
         }
         if (_.isObject(v)) {
-          if (v.required) {
-            assert(!!row[v.column], `A required column is missing: [${v.column}]`);
+          columnName = v.column;
+          if (columnPrefix) {
+            columnName = columnPrefix + '.' + columnName;
           }
-          if (row[v.column] !== undefined) {
-            o[k] = parseType(v.type, row[v.column]);
+          // console.error('columnName is ', columnName, columnPrefix);
+          let actualRow = row[columnName];
+          if (v.required) {
+            assert(!!actualRow, `A required column is missing: [${v.column}]`);
+          }
+          if (actualRow !== undefined) {
+            if (v.type) {
+              o[k] = parseType(v.type, actualRow);
+            } else {
+              o[k] = actualRow;
+            }
+          }
+          if (v.schema) {
+            assert(v.modelName, 'A schema requires a model name');
+            o[k] = parse(row, v.schema, v.modelName);
           }
         }
       });
@@ -76,7 +98,7 @@
       }
       let row = rows[0];
       let count = {};
-      let labels = [/^(COUNT)$/, /^(COUNT\(.*\))$/];
+      let labels = [/^(COUNT)$/i, /^(COUNT\(.*\))$/i];
       _.forEach(labels, (label) => {
         let props = 0;
         _.forEach(row, (v, k) => {
