@@ -2,6 +2,7 @@
   const _ = require('lodash');
   const wrapper = require.main.require('main');
   const Relation = wrapper.Relation;
+  const Type = wrapper.Type;
   const chai = require('chai');
 
   chai.use(require('chai-as-promised'));
@@ -54,7 +55,12 @@
       modelName: 'PASSENGER',
       relation: Relation.ONE_TO_MANY,
       schema: SCHEMA_PERSON
-    }
+    },
+    'distance': {
+      column: 'DISTANCE',
+      type: Type.FLOAT
+    },
+    'timeElapsed': 'ELAPSED_TIME'
   };
 
   const SQL_JOURNEY_QUERY =

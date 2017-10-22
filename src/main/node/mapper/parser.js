@@ -4,6 +4,7 @@
   const assert = require('assert');
 
   const Relation = require('../relation');
+  const Type = require('../type');
 
   const COUNT_ERROR =
     `A count row is expected to contain only a single
@@ -42,13 +43,14 @@
           return parseInt(value);
         case Date:
           return new Date(value);
+        case Type.FLOAT:
+          return Type.FLOAT.operation(value);
         default:
           return value;
       }
     }
 
     function parse(rows, localSchema, columnPrefix) {
-      console.error('parsing!!! ', rows);
       let row = rows[0];
       let o = {};
       if (!localSchema && _.isEmpty(schema)) {
