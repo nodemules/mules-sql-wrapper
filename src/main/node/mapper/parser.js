@@ -3,6 +3,8 @@
   const moment = require('moment');
   const assert = require('assert');
 
+  const Relation = require('../relation');
+
   const COUNT_ERROR =
     `A count row is expected to contain only a single
   enumerable property case-insensitively matching COUNT or COUNT(*)`;
@@ -45,7 +47,8 @@
       }
     }
 
-    function parse(row, localSchema, columnPrefix) {
+    function parse(rows, localSchema, columnPrefix) {
+      let row = rows[0];
       let o = {};
       if (!localSchema && _.isEmpty(schema)) {
         assert(allowEmptySchema,
@@ -71,7 +74,6 @@
           if (columnPrefix) {
             columnName = columnPrefix + '.' + columnName;
           }
-          // console.error('columnName is ', columnName, columnPrefix);
           let actualRow = row[columnName];
           if (v.required) {
             assert(!!actualRow, `A required column is missing: [${v.column}]`);
@@ -85,7 +87,20 @@
           }
           if (v.schema) {
             assert(v.modelName, 'A schema requires a model name');
-            o[k] = parse(row, v.schema, v.modelName);
+
+            switch (v.relation) {
+              case Relation.ONE_TO_MANY:
+                var oneToManyRows = [];
+                _.forEach(rows, (oneToManyRow) => {
+                  oneToManyRows.push(parse([oneToManyRow], v.schema, v.modelName));
+                });
+                o[k] = oneToManyRows;
+                break;
+              case Relation.ONE_TO_ONE:
+              default:
+                o[k] = parse([row], v.schema, v.modelName);
+                break;
+            }
           }
         }
       });

@@ -22,12 +22,12 @@
         if (!rows || !rows.length) {
           return {};
         }
-        return Parser.parse(rows[0]);
+        return Parser.parse(rows);
       },
       mapRows: (rows) => {
         let results = [];
         _.forEach(rows, (row) => {
-          results.push(Parser.parse(row));
+          results.push(Parser.parse([row]));
         });
         return results;
       }

@@ -1,5 +1,8 @@
 {
 
+  const _ = require('lodash');
+  const Relation = require.main.require('main').Relation;
+
   const TEST_MODEL_ID = '1';
   const TEST_MODEL_NAME = 'TEST MODEL';
   const TEST_MODEL_DESCRIPTION = 'TEST MODEL DESCRIPTION';
@@ -39,6 +42,23 @@
     }
   };
 
+  const TEST_ONE_TO_MANY_MODEL = {
+    'id': {
+      column: 'ONE_TO_MANY_ID',
+      type: Number,
+      required: true
+    },
+    'name': {
+      column: 'NAME',
+      required: true
+    },
+    'modelId': {
+      column: 'MODEL_ID',
+      type: Number,
+      required: true
+    }
+  };
+
   const TEST_MODEL = {
     'id': {
       column: 'MODEL_ID',
@@ -62,9 +82,21 @@
     },
     'related': {
       modelName: 'RELATED',
+      relation: Relation.ONE_TO_ONE,
       schema: TEST_RELATED_MODEL
-    }
+    },
   };
+
+  const TEST_MODEL_WITH_ONE_TO_MANY_RELATIONSHIP = (() => {
+    let model = _.cloneDeep(TEST_MODEL);
+    model.oneToMany = {
+      modelName: 'ONE_TO_MANY',
+      relation: Relation.ONE_TO_MANY,
+      key: this.id,
+      schema: TEST_ONE_TO_MANY_MODEL
+    };
+    return model;
+  })();
 
   const TEST_ROW = {
     'MODEL_ID': TEST_MODEL_ID,
@@ -110,6 +142,7 @@
   module.exports = {
     TEST_NUM_ROWS,
     TEST_MODEL,
+    TEST_MODEL_WITH_ONE_TO_MANY_RELATIONSHIP,
     TEST_ROW,
     TEST_RESULT,
     TEST_RESULT_NO_MODEL,
